@@ -1,0 +1,9 @@
+Index Only Scan using ix_telemetry_station_ts on telemetry  (cost=0.43..7.47 rows=135 width=20) (actual time=0.167..0.191 rows=144.00 loops=1)
+  Index Cond: ((station_id = 7) AND (ts >= '2026-08-15 00:00:00+05'::timestamp with time zone) AND (ts < '2026-08-16 00:00:00+05'::timestamp with time zone))
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=113
+Planning Time: 2.527 ms
+Execution Time: 0.251 ms

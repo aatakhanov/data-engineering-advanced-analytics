@@ -1,0 +1,16 @@
+Subquery Scan on x  (cost=0.49..182122.15 rows=101761 width=40) (actual time=0.207..2495.558 rows=100004.00 loops=1)
+  Filter: (x.reading_date = '2026-10-01'::date)
+  Rows Removed by Filter: 2300012
+  Buffers: shared hit=568 read=21391
+  ->  WindowAgg  (cost=0.49..152121.94 rows=2400017 width=40) (actual time=0.185..2340.657 rows=2400016.00 loops=1)
+        Window: w1 AS (PARTITION BY meter_reading.meter_id ORDER BY meter_reading.reading_date)
+        Storage: Memory  Maximum Storage: 17kB
+        Buffers: shared hit=568 read=21391
+        ->  Index Scan using meter_reading_meter_id_reading_date_key on meter_reading  (cost=0.43..104121.60 rows=2400017 width=14) (actual time=0.160..826.059 rows=2400016.00 loops=1)
+              Index Cond: (reading_date <= '2026-10-01'::date)
+              Index Searches: 1
+              Buffers: shared hit=568 read=21391
+Planning:
+  Buffers: shared hit=86 read=22
+Planning Time: 7.538 ms
+Execution Time: 2500.482 ms

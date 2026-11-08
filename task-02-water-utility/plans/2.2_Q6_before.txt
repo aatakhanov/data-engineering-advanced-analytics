@@ -1,0 +1,18 @@
+Sort  (cost=2133.94..2134.00 rows=24 width=10) (actual time=8.831..8.833 rows=24.00 loops=1)
+  Sort Key: r.reading_date
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=4 read=837
+  ->  Nested Loop  (cost=0.43..2133.39 rows=24 width=10) (actual time=1.754..8.795 rows=24.00 loops=1)
+        Buffers: shared hit=1 read=837
+        ->  Seq Scan on water_meter m  (cost=0.00..2084.05 rows=1 width=4) (actual time=1.674..8.707 rows=1.00 loops=1)
+              Filter: ((account_no)::text = 'GN-0012345'::text)
+              Rows Removed by Filter: 100003
+              Buffers: shared read=834
+        ->  Index Scan using meter_reading_meter_id_reading_date_key on meter_reading r  (cost=0.43..49.10 rows=24 width=14) (actual time=0.074..0.077 rows=24.00 loops=1)
+              Index Cond: (meter_id = m.meter_id)
+              Index Searches: 1
+              Buffers: shared hit=1 read=3
+Planning:
+  Buffers: shared hit=252 read=13
+Planning Time: 4.720 ms
+Execution Time: 8.890 ms

@@ -1,0 +1,43 @@
+Finalize GroupAggregate  (cost=41938.31..42105.54 rows=529 width=47) (actual time=572.158..579.166 rows=207.00 loops=1)
+  Group Key: d.name, i.period
+  Buffers: shared hit=1475 read=21209
+  ->  Gather Merge  (cost=41938.31..42086.22 rows=1270 width=47) (actual time=572.139..578.832 rows=621.00 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=1475 read=21209
+        ->  Sort  (cost=40938.29..40939.61 rows=529 width=47) (actual time=536.817..536.833 rows=207.00 loops=3)
+              Sort Key: d.name, i.period
+              Sort Method: quicksort  Memory: 45kB
+              Buffers: shared hit=1475 read=21209
+              Worker 0:  Sort Method: quicksort  Memory: 45kB
+              Worker 1:  Sort Method: quicksort  Memory: 45kB
+              ->  Partial HashAggregate  (cost=40907.75..40914.36 rows=529 width=47) (actual time=536.096..536.223 rows=207.00 loops=3)
+                    Group Key: d.name, i.period
+                    Batches: 1  Memory Usage: 113kB
+                    Buffers: shared hit=1439 read=21209
+                    Worker 0:  Batches: 1  Memory Usage: 113kB
+                    Worker 1:  Batches: 1  Memory Usage: 113kB
+                    ->  Hash Join  (cost=2477.10..38097.66 rows=374678 width=21) (actual time=22.713..391.643 rows=300004.00 loops=3)
+                          Hash Cond: (c.district_id = d.district_id)
+                          Buffers: shared hit=1439 read=21209
+                          ->  Parallel Hash Join  (cost=2475.58..36931.39 rows=374678 width=14) (actual time=22.065..305.301 rows=300004.00 loops=3)
+                                Hash Cond: ((i.account_no)::text = (c.account_no)::text)
+                                Buffers: shared hit=1436 read=21209
+                                ->  Parallel Seq Scan on invoice i  (cost=0.00..33472.23 rows=374678 width=21) (actual time=0.880..127.219 rows=300004.00 loops=3)
+                                      Filter: (period >= '2026-01-01'::date)
+                                      Rows Removed by Filter: 466667
+                                      Buffers: shared hit=284 read=21209
+                                ->  Parallel Hash  (cost=1740.26..1740.26 rows=58826 width=15) (actual time=20.871..20.872 rows=33334.67 loops=3)
+                                      Buckets: 131072  Batches: 1  Memory Usage: 5792kB
+                                      Buffers: shared hit=1152
+                                      ->  Parallel Seq Scan on customer c  (cost=0.00..1740.26 rows=58826 width=15) (actual time=0.015..7.337 rows=33334.67 loops=3)
+                                            Buffers: shared hit=1152
+                          ->  Hash  (cost=1.23..1.23 rows=23 width=15) (actual time=0.633..0.634 rows=23.00 loops=3)
+                                Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                Buffers: shared hit=3
+                                ->  Seq Scan on district d  (cost=0.00..1.23 rows=23 width=15) (actual time=0.604..0.608 rows=23.00 loops=3)
+                                      Buffers: shared hit=3
+Planning:
+  Buffers: shared hit=349
+Planning Time: 9.130 ms
+Execution Time: 579.530 ms

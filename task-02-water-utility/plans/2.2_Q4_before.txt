@@ -1,0 +1,30 @@
+Limit  (cost=85978.70..85978.95 rows=100 width=43) (actual time=1129.605..1155.517 rows=100.00 loops=1)
+  Buffers: shared hit=12544 read=9030, temp read=1081 written=1084
+  ->  Sort  (cost=85978.70..86218.78 rows=96030 width=43) (actual time=1129.602..1155.507 rows=100.00 loops=1)
+        Sort Key: (sum(amount)) DESC
+        Sort Method: top-N heapsort  Memory: 36kB
+        Buffers: shared hit=12544 read=9030, temp read=1081 written=1084
+        ->  Finalize GroupAggregate  (cost=50600.44..82308.50 rows=96030 width=43) (actual time=801.666..1133.504 rows=96808.00 loops=1)
+              Group Key: account_no
+              Buffers: shared hit=12541 read=9030, temp read=1081 written=1084
+              ->  Gather Merge  (cost=50600.44..79379.59 rows=230472 width=43) (actual time=801.657..1027.942 rows=191950.00 loops=1)
+                    Workers Planned: 2
+                    Workers Launched: 2
+                    Buffers: shared hit=12541 read=9030, temp read=1081 written=1084
+                    ->  Partial GroupAggregate  (cost=49600.41..51777.38 rows=96030 width=43) (actual time=699.542..796.297 rows=63983.33 loops=3)
+                          Group Key: account_no
+                          Buffers: shared hit=12541 read=9030, temp read=1081 written=1084
+                          ->  Sort  (cost=49600.41..49925.94 rows=130212 width=17) (actual time=699.496..739.412 rows=104977.00 loops=3)
+                                Sort Key: account_no
+                                Sort Method: external merge  Disk: 3520kB
+                                Buffers: shared hit=12541 read=9030, temp read=1081 written=1084
+                                Worker 0:  Sort Method: external merge  Disk: 2696kB
+                                Worker 1:  Sort Method: external merge  Disk: 2432kB
+                                ->  Parallel Seq Scan on invoice  (cost=0.00..35868.07 rows=130212 width=17) (actual time=0.902..145.599 rows=104977.00 loops=3)
+                                      Filter: ((status <> 'paid'::invoice_status) AND (issued_on < '2026-09-01'::date))
+                                      Rows Removed by Filter: 661694
+                                      Buffers: shared hit=12463 read=9030
+Planning:
+  Buffers: shared hit=165
+Planning Time: 2.341 ms
+Execution Time: 1167.592 ms

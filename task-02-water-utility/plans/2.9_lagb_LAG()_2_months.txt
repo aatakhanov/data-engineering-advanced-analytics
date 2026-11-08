@@ -1,0 +1,26 @@
+Subquery Scan on x  (cost=38130.97..68055.37 rows=8517 width=40) (actual time=152.922..317.742 rows=100004.00 loops=1)
+  Filter: (x.reading_date = '2026-10-01'::date)
+  Rows Removed by Filter: 100004
+  Buffers: shared hit=11480 read=3901, temp read=256 written=257
+  ->  WindowAgg  (cost=38130.97..65544.36 rows=200881 width=40) (actual time=152.904..301.130 rows=200008.00 loops=1)
+        Window: w1 AS (PARTITION BY meter_reading.meter_id ORDER BY meter_reading.reading_date)
+        Storage: Memory  Maximum Storage: 17kB
+        Buffers: shared hit=11480 read=3901, temp read=256 written=257
+        ->  Gather Merge  (cost=38130.84..61526.74 rows=200881 width=14) (actual time=152.872..195.500 rows=200008.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=11480 read=3901, temp read=256 written=257
+              ->  Sort  (cost=37130.81..37340.06 rows=83700 width=14) (actual time=117.288..121.485 rows=66669.33 loops=3)
+                    Sort Key: meter_reading.meter_id, meter_reading.reading_date
+                    Sort Method: external merge  Disk: 2048kB
+                    Buffers: shared hit=11480 read=3901, temp read=256 written=257
+                    Worker 0:  Sort Method: quicksort  Memory: 3135kB
+                    Worker 1:  Sort Method: quicksort  Memory: 3582kB
+                    ->  Parallel Seq Scan on meter_reading  (cost=0.00..30287.11 rows=83700 width=14) (actual time=0.740..101.434 rows=66669.33 loops=3)
+                          Filter: ((reading_date >= '2026-09-01'::date) AND (reading_date <= '2026-10-01'::date))
+                          Rows Removed by Filter: 733336
+                          Buffers: shared hit=11386 read=3901
+Planning:
+  Buffers: shared hit=111
+Planning Time: 2.746 ms
+Execution Time: 332.929 ms

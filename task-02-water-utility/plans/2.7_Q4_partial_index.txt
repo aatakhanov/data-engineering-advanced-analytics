@@ -1,0 +1,19 @@
+Limit  (cost=43625.03..43625.28 rows=100 width=43) (actual time=364.866..364.878 rows=100.00 loops=1)
+  Buffers: shared hit=1558, temp read=1079 written=2195
+  ->  Sort  (cost=43625.03..43869.56 rows=97810 width=43) (actual time=364.863..364.869 rows=100.00 loops=1)
+        Sort Key: (sum(amount)) DESC
+        Sort Method: top-N heapsort  Memory: 37kB
+        Buffers: shared hit=1558, temp read=1079 written=2195
+        ->  HashAggregate  (cost=34906.09..39886.80 rows=97810 width=43) (actual time=186.389..345.049 rows=96808.00 loops=1)
+              Group Key: account_no
+              Planned Partitions: 4  Batches: 5  Memory Usage: 8241kB  Disk Usage: 11168kB
+              Buffers: shared hit=1555, temp read=1079 written=2195
+              ->  Index Only Scan using ix_invoice_open on invoice  (cost=0.42..11856.50 rows=320690 width=17) (actual time=0.089..47.054 rows=314931.00 loops=1)
+                    Index Cond: (issued_on < '2026-09-01'::date)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=1555
+Planning:
+  Buffers: shared hit=189
+Planning Time: 2.968 ms
+Execution Time: 378.014 ms

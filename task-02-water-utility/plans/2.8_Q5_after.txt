@@ -1,0 +1,12 @@
+Bitmap Heap Scan on customer  (cost=273.79..1437.37 rows=960 width=47) (actual time=11.571..14.551 rows=1065.00 loops=1)
+  Recheck Cond: (address ~~* '%mustaqillik ko''chasi 17%'::text)
+  Heap Blocks: exact=686
+  Buffers: shared hit=1038
+  ->  Bitmap Index Scan on ix_customer_address_trgm  (cost=0.00..273.55 rows=960 width=0) (actual time=11.414..11.414 rows=1065.00 loops=1)
+        Index Cond: (address ~~* '%mustaqillik ko''chasi 17%'::text)
+        Index Searches: 1
+        Buffers: shared hit=352
+Planning:
+  Buffers: shared hit=105
+Planning Time: 4.319 ms
+Execution Time: 15.314 ms

@@ -1,0 +1,14 @@
+GroupAggregate  (cost=0.42..2129.15 rows=2 width=12) (actual time=0.338..8.436 rows=29.00 loops=1)
+  Group Key: telemetry_part.station_id
+  Buffers: shared hit=509
+  ->  Index Only Scan using telemetry_part_2026_10_station_id_ts_pressure_bar_flow_m3h_idx on telemetry_part_2026_10 telemetry_part  (cost=0.42..2129.12 rows=2 width=4) (actual time=0.249..8.401 rows=42.00 loops=1)
+        Index Cond: (ts >= '2026-10-25 00:00:00+05'::timestamp with time zone)
+        Filter: (pressure_bar < 1.0)
+        Rows Removed by Filter: 50358
+        Heap Fetches: 0
+        Index Searches: 51
+        Buffers: shared hit=509
+Planning:
+  Buffers: shared hit=244
+Planning Time: 2.140 ms
+Execution Time: 8.503 ms

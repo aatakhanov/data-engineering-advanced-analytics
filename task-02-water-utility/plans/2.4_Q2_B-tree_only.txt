@@ -1,0 +1,17 @@
+GroupAggregate  (cost=1460.66..1460.70 rows=2 width=12) (actual time=9.597..9.611 rows=29.00 loops=1)
+  Group Key: station_id
+  Buffers: shared hit=422
+  ->  Sort  (cost=1460.66..1460.67 rows=2 width=4) (actual time=9.579..9.581 rows=42.00 loops=1)
+        Sort Key: station_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=422
+        ->  Index Scan using ix_telemetry_ts_btree on telemetry  (cost=0.43..1460.65 rows=2 width=4) (actual time=0.221..9.537 rows=42.00 loops=1)
+              Index Cond: (ts >= '2026-10-25 00:00:00+05'::timestamp with time zone)
+              Filter: (pressure_bar < 1.0)
+              Rows Removed by Filter: 50358
+              Index Searches: 1
+              Buffers: shared hit=419
+Planning:
+  Buffers: shared hit=107
+Planning Time: 2.178 ms
+Execution Time: 9.685 ms

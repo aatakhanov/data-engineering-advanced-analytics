@@ -1,0 +1,9 @@
+Index Only Scan using telemetry_part_2026_08_station_id_ts_pressure_bar_flow_m3h_idx on telemetry_part_2026_08 telemetry_part  (cost=0.42..7.57 rows=140 width=20) (actual time=0.087..0.124 rows=144.00 loops=1)
+  Index Cond: ((station_id = 7) AND (ts >= '2026-08-15 00:00:00+05'::timestamp with time zone) AND (ts < '2026-08-16 00:00:00+05'::timestamp with time zone))
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=236
+Planning Time: 2.214 ms
+Execution Time: 0.157 ms

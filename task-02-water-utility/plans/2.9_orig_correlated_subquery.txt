@@ -1,0 +1,19 @@
+Gather  (cost=1000.00..342592.57 rows=101761 width=40) (actual time=0.802..842.048 rows=100004.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=380132 read=35171
+  ->  Parallel Seq Scan on meter_reading r  (cost=0.00..27787.09 rows=42400 width=14) (actual time=0.428..84.233 rows=33334.67 loops=3)
+        Filter: (reading_date = '2026-10-01'::date)
+        Rows Removed by Filter: 766671
+        Buffers: shared hit=430 read=14857
+  SubPlan 1
+    ->  Limit  (cost=0.43..2.98 rows=1 width=10) (actual time=0.007..0.007 rows=1.00 loops=100004)
+          Buffers: shared hit=379702 read=20314
+          ->  Index Scan Backward using meter_reading_meter_id_reading_date_key on meter_reading r2  (cost=0.43..20.84 rows=8 width=10) (actual time=0.007..0.007 rows=1.00 loops=100004)
+                Index Cond: ((meter_id = r.meter_id) AND (reading_date < r.reading_date))
+                Index Searches: 100004
+                Buffers: shared hit=379702 read=20314
+Planning:
+  Buffers: shared hit=84 read=25
+Planning Time: 10.318 ms
+Execution Time: 851.325 ms

@@ -1,0 +1,18 @@
+Gather Merge  (cost=39488.15..39503.76 rows=134 width=20) (actual time=157.306..163.348 rows=144.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=360 read=19042 written=146
+  ->  Sort  (cost=38488.13..38488.27 rows=56 width=20) (actual time=81.507..81.510 rows=48.00 loops=3)
+        Sort Key: ts
+        Sort Method: quicksort  Memory: 26kB
+        Buffers: shared hit=360 read=19042 written=146
+        Worker 0:  Sort Method: quicksort  Memory: 28kB
+        Worker 1:  Sort Method: quicksort  Memory: 25kB
+        ->  Parallel Seq Scan on telemetry  (cost=0.00..38486.50 rows=56 width=20) (actual time=60.964..81.400 rows=48.00 loops=3)
+              Filter: ((ts >= '2026-08-15 00:00:00+05'::timestamp with time zone) AND (ts < '2026-08-16 00:00:00+05'::timestamp with time zone) AND (station_id = 7))
+              Rows Removed by Filter: 875952
+              Buffers: shared hit=282 read=19042 written=146
+Planning:
+  Buffers: shared hit=60 read=2
+Planning Time: 2.828 ms
+Execution Time: 163.442 ms

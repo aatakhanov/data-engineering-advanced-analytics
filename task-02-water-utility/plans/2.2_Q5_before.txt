@@ -1,0 +1,8 @@
+Seq Scan on customer  (cost=0.00..2402.05 rows=1081 width=47) (actual time=0.223..69.982 rows=1065.00 loops=1)
+  Filter: (address ~~* '%mustaqillik ko''chasi 17%'::text)
+  Rows Removed by Filter: 98939
+  Buffers: shared hit=1152
+Planning:
+  Buffers: shared hit=57
+Planning Time: 1.645 ms
+Execution Time: 70.137 ms

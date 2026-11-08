@@ -1,0 +1,22 @@
+GroupAggregate  (cost=20119.29..20119.32 rows=2 width=12) (actual time=7.532..7.543 rows=29.00 loops=1)
+  Group Key: station_id
+  Buffers: shared hit=388
+  ->  Sort  (cost=20119.29..20119.29 rows=2 width=4) (actual time=7.515..7.517 rows=42.00 loops=1)
+        Sort Key: station_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=388
+        ->  Bitmap Heap Scan on telemetry  (cost=12.10..20119.28 rows=2 width=4) (actual time=0.347..7.479 rows=42.00 loops=1)
+              Recheck Cond: (ts >= '2026-10-25 00:00:00+05'::timestamp with time zone)
+              Rows Removed by Index Recheck: 1216
+              Filter: (pressure_bar < 1.0)
+              Rows Removed by Filter: 50358
+              Heap Blocks: lossy=380
+              Buffers: shared hit=385
+              ->  Bitmap Index Scan on ix_telemetry_ts_brin  (cost=0.00..12.10 rows=52212 width=0) (actual time=0.056..0.057 rows=3800.00 loops=1)
+                    Index Cond: (ts >= '2026-10-25 00:00:00+05'::timestamp with time zone)
+                    Index Searches: 1
+                    Buffers: shared hit=5
+Planning:
+  Buffers: shared hit=97
+Planning Time: 1.831 ms
+Execution Time: 7.629 ms

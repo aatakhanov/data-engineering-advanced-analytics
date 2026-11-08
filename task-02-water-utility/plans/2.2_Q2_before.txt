@@ -1,0 +1,19 @@
+GroupAggregate  (cost=36749.21..36749.24 rows=2 width=12) (actual time=154.119..159.848 rows=29.00 loops=1)
+  Group Key: station_id
+  Buffers: shared hit=1037 read=18290 written=181
+  ->  Sort  (cost=36749.21..36749.21 rows=2 width=4) (actual time=154.096..159.806 rows=42.00 loops=1)
+        Sort Key: station_id
+        Sort Method: quicksort  Memory: 25kB
+        Buffers: shared hit=1037 read=18290 written=181
+        ->  Gather  (cost=1000.00..36749.20 rows=2 width=4) (actual time=149.932..159.725 rows=42.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=1034 read=18290 written=181
+              ->  Parallel Seq Scan on telemetry  (cost=0.00..35749.00 rows=1 width=4) (actual time=106.871..110.761 rows=14.00 loops=3)
+                    Filter: ((ts >= '2026-10-25 00:00:00+05'::timestamp with time zone) AND (pressure_bar < 1.0))
+                    Rows Removed by Filter: 875986
+                    Buffers: shared hit=1034 read=18290 written=181
+Planning:
+  Buffers: shared hit=62
+Planning Time: 1.956 ms
+Execution Time: 159.981 ms

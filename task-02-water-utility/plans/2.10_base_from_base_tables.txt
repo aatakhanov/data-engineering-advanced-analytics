@@ -1,0 +1,39 @@
+Finalize GroupAggregate  (cost=8231.68..8236.71 rows=23 width=47) (actual time=223.496..233.721 rows=9.00 loops=1)
+  Group Key: i.period
+  Buffers: shared hit=37217 read=15744
+  ->  Gather Merge  (cost=8231.68..8236.13 rows=39 width=47) (actual time=223.484..233.700 rows=18.00 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=37217 read=15744
+        ->  Sort  (cost=7231.67..7231.73 rows=23 width=47) (actual time=199.256..199.259 rows=9.00 loops=2)
+              Sort Key: i.period
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=37217 read=15744
+              Worker 0:  Sort Method: quicksort  Memory: 25kB
+              ->  Partial HashAggregate  (cost=7230.87..7231.15 rows=23 width=47) (actual time=199.205..199.213 rows=9.00 loops=2)
+                    Group Key: i.period
+                    Batches: 1  Memory Usage: 32kB
+                    Buffers: shared hit=37208 read=15744
+                    Worker 0:  Batches: 1  Memory Usage: 32kB
+                    ->  Nested Loop  (cost=1.73..7116.22 rows=22929 width=21) (actual time=2.322..190.982 rows=19422.00 loops=2)
+                          Buffers: shared hit=37208 read=15744
+                          ->  Hash Join  (cost=1.30..1924.43 rows=2558 width=22) (actual time=1.773..14.344 rows=2158.00 loops=2)
+                                Hash Cond: (c.district_id = d.district_id)
+                                Buffers: shared hit=1 read=1153
+                                ->  Parallel Seq Scan on customer c  (cost=0.00..1740.26 rows=58826 width=15) (actual time=0.786..6.397 rows=50002.00 loops=2)
+                                      Buffers: shared read=1152
+                                ->  Hash  (cost=1.29..1.29 rows=1 width=15) (actual time=0.958..0.959 rows=1.00 loops=2)
+                                      Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                      Buffers: shared hit=1 read=1
+                                      ->  Seq Scan on district d  (cost=0.00..1.29 rows=1 width=15) (actual time=0.936..0.939 rows=1.00 loops=2)
+                                            Filter: (name = 'District 5'::text)
+                                            Rows Removed by Filter: 22
+                                            Buffers: shared hit=1 read=1
+                          ->  Index Scan using invoice_account_no_period_key on invoice i  (cost=0.43..1.94 rows=9 width=21) (actual time=0.029..0.079 rows=9.00 loops=4316)
+                                Index Cond: (((account_no)::text = (c.account_no)::text) AND (period >= '2026-01-01'::date))
+                                Index Searches: 4316
+                                Buffers: shared hit=37207 read=14591
+Planning:
+  Buffers: shared hit=339 read=50
+Planning Time: 17.282 ms
+Execution Time: 234.893 ms

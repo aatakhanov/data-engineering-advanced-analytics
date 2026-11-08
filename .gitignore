@@ -1,0 +1,16 @@
+# secrets and local config
+.env
+.env.*
+pgpass.conf
+.pgpass
+*.pem
+*.key
+*password*
+*secret*
+
+# local files
+*.log
+*.bak
+pgdata/
+.claude/
+.vscode/
